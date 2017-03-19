@@ -1,3 +1,5 @@
+import sun.invoke.empty.Empty;
+
 import java.io.File;
 import java.util.Scanner;
 
@@ -21,20 +23,31 @@ class Renamer
         Scanner input = new Scanner(in);
         int index = 0;
         deleteInvisibleFiles();
-        OUT: while(true) {
+        while(true) {
             System.out.println("1. Show list of files.\n" +
                     "2. Rename files.\n" +
                     "3. Exit.");
             index = Integer.parseInt(input.next());
             switch(index) {
                 case 1:
-                    printFileNames();
+                    try {
+                        printFileNames();
+                    } catch (EmptyFolderExceprtion e) {
+                    System.out.println("Empty directory");
+                    return;
+                    }
                     break;
                 case 2:
-                    renameFiles();
+                    try {
+                        printFileNames();
+                    } catch (EmptyFolderExceprtion e) {
+                        System.out.println("Empty directory");
+                        return;
+                    }
+                    recursiveRenameFiles();
                     break;
                 case 3:
-                    break OUT;
+                    return;
             }
         }
     }
@@ -49,14 +62,8 @@ class Renamer
         }
     }
 
-    private void printFileNames() {
-        File[] child_files = null;
-        try {
-            child_files = folder.listFiles();
-        }
-        catch (NullPointerException e) {
-            System.out.println("Empty directory"+e);
-        }
+    private void printFileNames() throws EmptyFolderExceprtion {
+        File[] child_files = createFilesList();
         for (File child: child_files)
             System.out.println(child.getName());
     }
@@ -113,5 +120,22 @@ class Renamer
             System.out.println("wrong number of files.");
         if (renameCounter==folderSize())
             System.out.println("All files renamed successfully");
+    }
+
+    private void recursiveRenameFiles() {
+        renameFiles();
+        File[] files = folder.listFiles();
+        for (File file: files) {
+            if (file.isDirectory())
+                new Renamer(file.getAbsolutePath()).recursiveRenameFiles();
+        }
+    }
+
+    private File[] createFilesList() throws EmptyFolderExceprtion {
+        File[] files = folder.listFiles();
+        if (files.length==0)
+            throw new EmptyFolderExceprtion();
+        else
+            return files;
     }
 }
