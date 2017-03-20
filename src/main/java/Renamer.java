@@ -1,6 +1,15 @@
-import sun.invoke.empty.Empty;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.CannotWriteException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 import static java.lang.System.in;
@@ -29,7 +38,9 @@ class Renamer
         while(true) {
             System.out.println("1. Show list of files.\n" +
                     "2. Rename files.\n" +
-                    "3. Exit.");
+                    "3. Get MetaData\n"+
+                    "4. SetMetaData\n"+
+                    "5. Exit.");
             index = Integer.parseInt(input.next());
             switch(index) {
                 case 1:
@@ -50,6 +61,12 @@ class Renamer
                     recursiveRenameFiles();
                     break;
                 case 3:
+                    getMetaData();
+                    break;
+                case 4:
+                    setMetaData();
+                    break;
+                case 5:
                     return;
             }
         }
@@ -135,5 +152,53 @@ class Renamer
             throw new EmptyFolderExceprtion();
         else
             return files;
+    }
+
+    private void getMetaData() {
+        File[] files = folder.listFiles();
+        for(File file: files) {
+            try {
+                AudioFile f = AudioFileIO.read(file);
+                Tag tag = f.getTag();
+                System.out.println("ARTIST: "+tag.getFirst(FieldKey.ARTIST)+
+                        "\nSONG: "+tag.getFirst(FieldKey.TITLE)+"\n");
+            } catch (CannotReadException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TagException e) {
+                e.printStackTrace();
+            } catch (ReadOnlyFileException e) {
+                e.printStackTrace();
+            } catch (InvalidAudioFrameException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void setMetaData(File file) {
+        File[] files = folder.listFiles();
+        for(File file: files) {
+            try {
+                String[] tags = file.getName().split(" - ");
+                AudioFile f = AudioFileIO.read(file);
+                Tag tag = f.getTag();
+                tag.setField(FieldKey.ARTIST, tags[0]);
+                tag.setField(FieldKey.TITLE, tags[1]);
+                f.commit();
+            } catch (CannotReadException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TagException e) {
+                e.printStackTrace();
+            } catch (ReadOnlyFileException e) {
+                e.printStackTrace();
+            } catch (InvalidAudioFrameException e) {
+                e.printStackTrace();
+            } catch (CannotWriteException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
