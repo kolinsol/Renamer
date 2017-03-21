@@ -1,7 +1,8 @@
-package Exceptions;
+package Exception;
 
 /**
  * Created by kolinsol on 3/21/17.
  */
-public class NotADirectoryException {
+public class NotADirectoryException extends Exception {
+    public NotADirectoryException() {}
 }
