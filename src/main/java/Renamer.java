@@ -64,7 +64,7 @@ class Renamer
                     getMetaData();
                     break;
                 case 4:
-                    setMetaData();
+                    recursiveSetMetaData();
                     break;
                 case 5:
                     return;
@@ -157,48 +157,63 @@ class Renamer
     private void getMetaData() {
         File[] files = folder.listFiles();
         for(File file: files) {
-            try {
+            if ((!file.isDirectory()) && (file.getName().contains(".mp3"))) {
+                try {
                 AudioFile f = AudioFileIO.read(file);
                 Tag tag = f.getTag();
                 System.out.println("ARTIST: "+tag.getFirst(FieldKey.ARTIST)+
                         "\nSONG: "+tag.getFirst(FieldKey.TITLE)+"\n");
-            } catch (CannotReadException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TagException e) {
-                e.printStackTrace();
-            } catch (ReadOnlyFileException e) {
-                e.printStackTrace();
-            } catch (InvalidAudioFrameException e) {
-                e.printStackTrace();
+                } catch (CannotReadException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (TagException e) {
+                    e.printStackTrace();
+                } catch (ReadOnlyFileException e) {
+                    e.printStackTrace();
+                } catch (InvalidAudioFrameException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    private void setMetaData(File file) {
+    private void setMetaData() {
         File[] files = folder.listFiles();
         for(File file: files) {
-            try {
-                String[] tags = file.getName().split(" - ");
-                AudioFile f = AudioFileIO.read(file);
-                Tag tag = f.getTag();
-                tag.setField(FieldKey.ARTIST, tags[0]);
-                tag.setField(FieldKey.TITLE, tags[1]);
-                f.commit();
-            } catch (CannotReadException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TagException e) {
-                e.printStackTrace();
-            } catch (ReadOnlyFileException e) {
-                e.printStackTrace();
-            } catch (InvalidAudioFrameException e) {
-                e.printStackTrace();
-            } catch (CannotWriteException e) {
-                e.printStackTrace();
+            if ((!file.isDirectory()) && (file.getName().contains(".mp3"))) {
+                try {
+                    String filename = file.getName();
+                    filename = filename.replace(".mp3","");
+                    String[] tags = filename.split(" - ");
+                    AudioFile f = AudioFileIO.read(file);
+                    Tag tag = f.getTag();
+                    tag.setField(FieldKey.ARTIST, tags[0]);
+                    tag.setField(FieldKey.TITLE, tags[1]);
+                    f.commit();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (TagException e) {
+                    e.printStackTrace();
+                } catch (ReadOnlyFileException e) {
+                    e.printStackTrace();
+                } catch (InvalidAudioFrameException e) {
+                    e.printStackTrace();
+                } catch (CannotWriteException e) {
+                    e.printStackTrace();
+                } catch (CannotReadException e) {
+                    e.printStackTrace();
+                }
             }
+        }
+    }
+
+    private void recursiveSetMetaData() {
+        setMetaData();
+        File[] files = folder.listFiles();
+        for (File file: files) {
+            if (file.isDirectory())
+                new Renamer(file.getAbsolutePath()).recursiveSetMetaData();
         }
     }
 }
