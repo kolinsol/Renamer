@@ -1,3 +1,5 @@
+import Exception.EmptyFolderExceprtion;
+import Exception.NotADirectoryException;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -31,10 +33,15 @@ class Renamer
         Scanner input = new Scanner(in);
         int index = 0;
         try {
-            deleteInvisibleFiles();
+            checkDirectory();
         } catch (EmptyFolderExceprtion e) {
             System.out.println("Empty directory");
+            return;
+        } catch (NotADirectoryException e) {
+            System.out.println("Not A Directory");
+            return;
         }
+        deleteInvisibleFiles();
         while(true) {
             System.out.println("1. Show list of files.\n" +
                     "2. Rename files.\n" +
@@ -44,20 +51,9 @@ class Renamer
             index = Integer.parseInt(input.next());
             switch(index) {
                 case 1:
-                    try {
-                        printFileNames();
-                    } catch (EmptyFolderExceprtion e) {
-                    System.out.println("Empty directory");
-                    break;
-                    }
+                    printFileNames();
                     break;
                 case 2:
-                    try {
-                        createFilesList();
-                    } catch (EmptyFolderExceprtion e) {
-                        System.out.println("Empty directory");
-                        break;
-                    }
                     recursiveRenameFiles();
                     break;
                 case 3:
@@ -72,8 +68,8 @@ class Renamer
         }
     }
 
-    private void deleteInvisibleFiles() throws EmptyFolderExceprtion {
-        File[] files = createFilesList();
+    private void deleteInvisibleFiles() {
+        File[] files = folder.listFiles();
         for (File file : files) {
             if (file.getName().charAt(0)=='.'){
                 if (!file.delete())
@@ -82,8 +78,8 @@ class Renamer
         }
     }
 
-    private void printFileNames() throws EmptyFolderExceprtion {
-        File[] files = createFilesList();
+    private void printFileNames() {
+        File[] files = folder.listFiles();
         for (File file: files) {
             if (file.isDirectory()) {
                 System.out.println("\nDirectory: "+file.getAbsolutePath());
@@ -146,12 +142,11 @@ class Renamer
         }
     }
 
-    private File[] createFilesList() throws EmptyFolderExceprtion {
-        File[] files = folder.listFiles();
-        if (files.length==0)
+    private void checkDirectory() throws EmptyFolderExceprtion, NotADirectoryException {
+        if (!folder.isDirectory())
+            throw new NotADirectoryException();
+        if (folder.listFiles().length == 0)
             throw new EmptyFolderExceprtion();
-        else
-            return files;
     }
 
     private void getMetaData() {
