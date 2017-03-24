@@ -11,9 +11,12 @@ class StateManager {
     private Directory dir = Directory.getDirectoryInstance();
 
     void checkDirectory() throws EmptyFolderExceprtion, NotADirectoryException {
-        if (!dir.getDirFile().isDirectory())
+
+        if (!dir.getDirFile().isDirectory()) {
             throw new NotADirectoryException();
-        if (dir.getDirFile().listFiles().length == 0)
+        }
+        if (dir.getDirFile().listFiles().length == 0) {
             throw new EmptyFolderExceprtion();
+        }
     }
 }

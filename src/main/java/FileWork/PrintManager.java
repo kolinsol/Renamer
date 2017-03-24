@@ -1,7 +1,5 @@
 package FileWork;
 
-import FileWork.Directory;
-
 import java.io.File;
 
 /**
@@ -13,15 +11,18 @@ class PrintManager {
 
     void recursivePrintFileNames() {
         File[] files = dir.getDirFile().listFiles();
-        for (File file: files)
-            printFileName(file);
+        if (files != null) {
+            for (File file: files) {
+                printFileName(file);
+            }
+        }
     }
 
     private void printFileName(File file) {
         if (file.isDirectory()) {
+            System.out.println("Directory: "+file.getAbsolutePath());
             File[] files = file.listFiles();
             for (File childFile: files) {
-                System.out.println("Directory: "+childFile.getAbsolutePath());
                 printFileName(childFile);
             }
         } else

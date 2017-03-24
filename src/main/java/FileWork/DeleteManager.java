@@ -1,7 +1,5 @@
 package FileWork;
 
-import FileWork.Directory;
-
 import java.io.File;
 
 /**
@@ -17,14 +15,20 @@ class DeleteManager {
                 System.out.println("Error deleting invisible file"+file.getAbsolutePath());
         } else if (file.isDirectory()) {
             File[] files = file.listFiles();
-            for (File childFile: files)
-                deleteInvisibleFile(childFile);
+            if (files != null) {
+                for (File childFile : files) {
+                    deleteInvisibleFile(childFile);
+                }
+            }
         }
     }
 
     void recursiveDeleteInvisibleFiles() {
         File[] files = dir.getDirFile().listFiles();
-        for (File file: files)
-            deleteInvisibleFile(file);
+        if (files != null) {
+            for (File file: files) {
+                deleteInvisibleFile(file);
+            }
+        }
     }
 }
