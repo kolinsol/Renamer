@@ -117,22 +117,22 @@ class AlbumManager {
             return;
         }
         String fileName = file.getName().substring(0,file.getName().length()-6);
-        String[] audioTags = fileName.split(" - ");
-        String artistTag = audioTags[0];
-        String albumTag = audioTags[1];
-        File[] files = file.listFiles();
-        if (files != null) {
-            File albumArtwork = getAlbumArtwork(file);
-            int totalTrackTag = getTotalTrackNumber(file);
-            int trackTag = 1;
-            for (File childFile: files) {
-                if (childFile.getName().contains(".mp3")) {
-                    setAlbumTrackMetaData(childFile, artistTag, albumTag, String.valueOf(trackTag), String.valueOf(totalTrackTag));
-                    setAlbumArtwork(childFile, albumArtwork);
-                    trackTag++;
+            String[] audioTags = fileName.split(" - ");
+            String artistTag = audioTags[0];
+            String albumTag = audioTags[1];
+            File[] files = file.listFiles();
+            if (files != null) {
+                File albumArtwork = getAlbumArtwork(file);
+                int totalTrackTag = getTotalTrackNumber(file);
+                int trackTag = 1;
+                for (File childFile: files) {
+                    if (childFile.getName().contains(".mp3")) {
+                        setAlbumTrackMetaData(childFile, artistTag, albumTag, String.valueOf(trackTag), String.valueOf(totalTrackTag));
+                        setAlbumArtwork(childFile, albumArtwork);
+                        trackTag++;
+                    }
                 }
-            }
-            deleteCoverFiles(file);
+                deleteCoverFiles(file);
         }
     }
 

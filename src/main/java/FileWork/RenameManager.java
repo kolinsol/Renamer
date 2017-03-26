@@ -11,28 +11,29 @@ class RenameManager {
 
     private String formatFileNameByTemplate(File file) {
         String fileName = file.getName();
+        if (fileName.contains("_")) {
+            fileName = fileName.replace(".mp3", "");
+            fileName = fileName.replace("[www.MP3Fiber.com]", "");
+            fileName = fileName.replace("[MP3Fiber.com]", "");
+            fileName = fileName.replace("_", " ");
+            fileName = fileName.toLowerCase();
+            fileName = fileName.replace("produced by", " (p ");
+            fileName = fileName.replace("production by", " (p ");
+            fileName = fileName.replace(" production ", " (p ");
+            fileName = fileName.replace("prod by", " (p ");
+            fileName = fileName.replace(" prod ", " (p ");
+            fileName = fileName.replace("p by", " (p ");
+            fileName = fileName.replace("featuring", " (w ");
+            fileName = fileName.replace(" feat ", " (w ");
+            fileName = fileName.replace(" ft ", " (w ");
+            fileName = fileName.replaceAll("^ +| +$|( )+", "$1");
 
-        fileName = fileName.replace(".mp3", "");
-        fileName = fileName.replace("[www.MP3Fiber.com]", "");
-        fileName = fileName.replace("[MP3Fiber.com]", "");
-        fileName = fileName.replace("_", " ");
-        fileName = fileName.toLowerCase();
-        fileName = fileName.replace("produced by", " (p ");
-        fileName = fileName.replace("production by", " (p ");
-        fileName = fileName.replace(" production ", " (p ");
-        fileName = fileName.replace("prod by", " (p ");
-        fileName = fileName.replace(" prod ", " (p ");
-        fileName = fileName.replace("p by", " (p ");
-        fileName = fileName.replace("featuring", " (w ");
-        fileName = fileName.replace(" feat ", " (w ");
-        fileName = fileName.replace(" ft ", " (w ");
-        fileName = fileName.replaceAll("^ +| +$|( )+", "$1");
+            if (fileName.contains("(p")) fileName = fileName + ")";
+            if ((fileName.contains("(w")) && !(fileName.contains("(p"))) fileName = fileName + ")";
+            if ((fileName.contains("(w")) && (fileName.contains("(p"))) fileName = fileName.replace(" (p", ") (p");
 
-        if (fileName.contains("(p")) fileName = fileName + ")";
-        if ((fileName.contains("(w")) && !(fileName.contains("(p"))) fileName = fileName + ")";
-        if ((fileName.contains("(w")) && (fileName.contains("(p"))) fileName = fileName.replace(" (p", ") (p");
-
-        fileName = fileName + ".mp3";
+            fileName = fileName + ".mp3";
+        }
         return fileName;
     }
 
