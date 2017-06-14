@@ -1,4 +1,4 @@
-package FileWork;
+package filework;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -9,20 +9,16 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
-import org.jaudiotagger.tag.images.Artwork;
-import org.jaudiotagger.tag.images.ArtworkFactory;
+import pojo.Directory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by kolinsol on 3/22/17.
- */
 class MetaDataManager {
 
-    private Directory dir = Directory.getDirectoryInstance();
+    private Directory dir = Directory.getInstance();
 
     private void getMetaData(File file) {
         if ((!file.isDirectory()) && (file.getName().contains(".mp3"))) {

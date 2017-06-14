@@ -1,4 +1,4 @@
-package FileWork;
+package filework;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -15,9 +15,6 @@ import org.jaudiotagger.tag.images.ArtworkFactory;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by kolinsol on 3/24/17.
- */
 class AlbumManager {
 
     private void setAlbumTrackMetaData(File file, String artistTag, String albumTag, String trackTag, String totalTrackTag) {
@@ -65,7 +62,7 @@ class AlbumManager {
         int jpgCounter = 0;
         if (files != null) {
             for (File childFile : files) {
-                if (childFile.getName().contains(".jpg")) {
+                if ((childFile.getName().contains(".jpg")) || (childFile.getName().contains(".png"))) {
                     jpgCounter++;
                 }
             }
@@ -77,7 +74,7 @@ class AlbumManager {
         File[] files = file.listFiles();
         if (files != null) {
             for (File childFile : files) {
-                if (childFile.getName().contains(".jpg")) {
+                if ((childFile.getName().contains(".jpg")) || (childFile.getName().contains(".png"))) {
                     return childFile;
                 }
             }
@@ -140,7 +137,7 @@ class AlbumManager {
         File[] files = file.listFiles();
         if (files != null) {
             for (File childFile : files) {
-                if (childFile.getName().contains(".jpg")) {
+                if ((childFile.getName().contains(".jpg")) || (childFile.getName().contains(".png"))) {
                     if (!childFile.delete()) {
                         System.out.println("Error deleting file "+childFile.getAbsolutePath());
                     }

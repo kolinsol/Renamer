@@ -1,14 +1,11 @@
-package FileWork;
+package filework;
 
 import java.util.Scanner;
-import Exception.EmptyFolderExceprtion;
-import Exception.NotADirectoryException;
+import exception.EmptyFolderExceprtion;
+import exception.NotADirectoryException;
 
 import static java.lang.System.in;
 
-/**
- * Created by kolinsol on 3/22/17.
- */
 public class Runner {
     public void run() {
         Scanner input = new Scanner(in);

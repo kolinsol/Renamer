@@ -1,14 +1,11 @@
-package FileWork;
+package pojo;
 
 import java.io.File;
 
-/**
- * Created by kolinsol on 2/26/17.
- */
-class Directory
+public class Directory
 {
     private final static String ROOT_DIR = "/Users/kolinsol/Desktop/_temp_downloads";
-    private static Directory directoryInstance = new Directory(ROOT_DIR);
+    private static Directory instance = new Directory(ROOT_DIR);
 
     private File dirFile;
     private String dirName;
@@ -18,11 +15,14 @@ class Directory
         dirName = path;
     }
 
-    static Directory getDirectoryInstance() {
-        return directoryInstance;
+    public static Directory getInstance() {
+        if (instance == null) {
+            instance = new Directory(ROOT_DIR);
+        }
+        return instance;
     }
 
-    File getDirFile() {
+    public File getDirFile() {
         return dirFile;
     }
 }

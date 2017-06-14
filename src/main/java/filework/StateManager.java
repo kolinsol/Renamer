@@ -1,14 +1,12 @@
-package FileWork;
+package filework;
 
-import Exception.EmptyFolderExceprtion;
-import Exception.NotADirectoryException;
+import exception.EmptyFolderExceprtion;
+import exception.NotADirectoryException;
+import pojo.Directory;
 
-/**
- * Created by kolinsol on 3/22/17.
- */
 class StateManager {
 
-    private Directory dir = Directory.getDirectoryInstance();
+    private Directory dir = Directory.getInstance();
 
     void checkDirectory() throws EmptyFolderExceprtion, NotADirectoryException {
 

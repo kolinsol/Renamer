@@ -1,13 +1,12 @@
-package FileWork;
+package filework;
+
+import pojo.Directory;
 
 import java.io.File;
 
-/**
- * Created by kolinsol on 3/22/17.
- */
 class RenameManager {
 
-    private Directory dir = Directory.getDirectoryInstance();
+    private Directory dir = Directory.getInstance();
 
     private String formatFileNameByTemplate(File file) {
         String fileName = file.getName();

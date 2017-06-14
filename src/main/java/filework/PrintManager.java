@@ -1,13 +1,12 @@
-package FileWork;
+package filework;
+
+import pojo.Directory;
 
 import java.io.File;
 
-/**
- * Created by kolinsol on 3/22/17.
- */
 class PrintManager {
 
-    private Directory dir = Directory.getDirectoryInstance();
+    private Directory dir = Directory.getInstance();
 
     void recursivePrintFileNames() {
         File[] files = dir.getDirFile().listFiles();
