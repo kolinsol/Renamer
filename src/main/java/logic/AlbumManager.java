@@ -1,4 +1,4 @@
-package filework;
+package logic;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;

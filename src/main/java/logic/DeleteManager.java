@@ -1,8 +1,9 @@
-package filework;
+package logic;
 
 import pojo.Directory;
 
 import java.io.File;
+import java.util.stream.Stream;
 
 class DeleteManager {
 

@@ -1,23 +1,20 @@
-package filework;
+package logic;
 
 import java.util.Scanner;
-import exception.EmptyFolderExceprtion;
-import exception.NotADirectoryException;
+import exceptions.EmptyFolderException;
+import exceptions.NotADirectoryException;
 
 import static java.lang.System.in;
 
 public class Runner {
-    public void run() {
+    public void run() throws RuntimeException {
         Scanner input = new Scanner(in);
-        StateManager stater = new StateManager();
         try {
-            stater.checkDirectory();
-        } catch (EmptyFolderExceprtion e) {
-            System.out.println("Empty directory");
-            return;
+            new StateManager().checkDirectory();
         } catch (NotADirectoryException e) {
-            System.out.println("Not A Directory");
-            return;
+            throw new RuntimeException("Not a directory" + e);
+        } catch (EmptyFolderException e) {
+            throw new RuntimeException("Empty directory" + e);
         }
         DeleteManager deleter = new DeleteManager();
         deleter.recursiveDeleteInvisibleFiles();
@@ -27,7 +24,7 @@ public class Runner {
                     "3. Set MetaData\n" +
                     "4. Get MetaData\n" +
                     "5. Exit.");
-            int index = Integer.parseInt(input.next());
+            int index = input.nextInt();
             MetaDataManager metadater = new MetaDataManager();
             switch(index) {
                 case 1:
