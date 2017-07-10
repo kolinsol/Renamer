@@ -1,5 +1,5 @@
 .DS_Store
-/out/*
-/target/*
+/out
+/target
 *.iml
-/.idea/*
+/.idea
